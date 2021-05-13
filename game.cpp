@@ -9,66 +9,73 @@ using namespace std;
  * Auto-generated code below aims at helping you parse
  * the standard input according to the problem statement.
  **/
-
-class Cell 
+class Cell
 {
     public:
         int index;
         int richness;
+        int neigh0;
+        int neigh1;
+        int neigh2;
+        int neigh3;
+        int neigh4;
+        int neigh5;
+        bool is_tree;
+        bool is_shadow;
+        bool is_hit_by_sun;
 
-        Cell()
+        Cell(){}
+        Cell(int i, int rich, int n0, int n1, int n2, int n3, int n4, int n5)
         {
-            this->index = 0;
-            this->richness = 0;
-        }
-
-        Cell(int index, int richness):index(index), richness(richness)
-        {
-            
+            this->index = i;
+            this->richness = rich;
+            this->neigh0 = n0;
+            this->neigh1 = n1;
+            this->neigh2 = n2;
+            this->neigh3 = n3;
+            this->neigh4 = n4;
+            this->neigh5 = n5;
         }
 };
 
 class Tree
 {
     public:
-        int index;
+        int cellIndex;
         int size;
-        bool is_mine;
-        bool is_dormant;
+        bool isMine;
+        bool isDormant;
 
-        Tree()
+        Tree(){}
+        Tree(int i, int size, bool is_m, bool is_d)
         {
-            this->index = 0;
-            this->size = 0;
-            this->is_mine = false;
-            this->is_dormant = false;
+            this->cellIndex = i;
+            this->size =size;
+            this->isMine = is_m;
+            this->isDormant = is_d;
         }
-
-        Tree(int index, int size, bool is_mine, bool is_dormant):index(index), size(size), is_mine(is_mine), is_dormant(is_dormant){}
-
-        
 };
 
-class Move
+class Action
 {
     public:
-        string action;
+        string command;
 
-        Move(){}
-        Move(string action):action(action){}
+    Action(){}
+    Action(string cmd):command(cmd){}
 };
-
-#define NB_CELL 37
 
 class Game
 {
-    public:
-        Cell *cells;
-        Tree *trees;
-        Move *moves;
-
-        Game(Cell cells[NB_CELL], Tree trees[], Move moves[]):cells(cells), trees(trees), moves(moves){}
-
+    int sun;
+    int day;
+    int sun_dir;
+    int nutrients;
+    int nb_trees;
+    int nb_trees_0;
+    int nb_trees_1;
+    int nb_trees_2;
+    int nb_trees_3;
 
 };
 
@@ -76,8 +83,6 @@ int main()
 {
     int numberOfCells; // 37
     cin >> numberOfCells; cin.ignore();
-    Cell cells[NB_CELL];
-
     for (int i = 0; i < numberOfCells; i++) {
         int index; // 0 is the center cell, the next cells spiral outwards
         int richness; // 0 if the cell is unusable, 1-3 for usable cells
@@ -88,7 +93,6 @@ int main()
         int neigh4;
         int neigh5;
         cin >> index >> richness >> neigh0 >> neigh1 >> neigh2 >> neigh3 >> neigh4 >> neigh5; cin.ignore();
-        cells[i] = Cell(index, richness);
     }
 
     // game loop
@@ -106,34 +110,25 @@ int main()
         cin >> oppSun >> oppScore >> oppIsWaiting; cin.ignore();
         int numberOfTrees; // the current amount of trees
         cin >> numberOfTrees; cin.ignore();
-        Tree trees[numberOfTrees];
         for (int i = 0; i < numberOfTrees; i++) {
             int cellIndex; // location of this tree
             int size; // size of this tree: 0-3
             bool isMine; // 1 if this is your tree
             bool isDormant; // 1 if this tree is dormant
             cin >> cellIndex >> size >> isMine >> isDormant; cin.ignore();
-            trees[i] = Tree(cellIndex, size, isMine, isDormant);
         }
-        int numberOfPossibleMoves;
-        cin >> numberOfPossibleMoves; cin.ignore();
-        Move moves[numberOfPossibleMoves];
-        for (int i = 0; i < numberOfPossibleMoves; i++) {
-            string possibleMove;
-            getline(cin, possibleMove);
-            cerr << "Action -> " << possibleMove << endl;
-            moves[i] = Move(possibleMove);
+        int numberOfPossibleActions; // all legal actions
+        cin >> numberOfPossibleActions; cin.ignore();
+        for (int i = 0; i < numberOfPossibleActions; i++) {
+            string possibleAction;
+            getline(cin, possibleAction); // try printing something from here to start with
         }
-        Game g = Game(cells, trees, moves);
+
         // Write an action using cout. DON'T FORGET THE "<< endl"
         // To debug: cerr << "Debug messages..." << endl;
 
 
         // GROW cellIdx | SEED sourceIdx targetIdx | COMPLETE cellIdx | WAIT <message>
-        if (numberOfPossibleMoves > 1)
-            cout << g.moves[1].action << endl;
-        else
-            cout << "WAIT" << endl;
-
+        cout << "WAIT" << endl;
     }
 }
